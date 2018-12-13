@@ -58,6 +58,9 @@ Replace <macaddr> with the MAC-address for your OBD2 adapter found using `blueto
 
 ## Install application
 
+* download from an url
+* extract (possibly to /opt)
+
 ### Enable application on boot
 
 * handle time before BT connected (less than 30 seconds, more than 15 seconds in test)
