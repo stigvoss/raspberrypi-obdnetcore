@@ -34,6 +34,8 @@ Open PiJuice configuration file using: `sudo nano /var/lib/pijuice/pijuice_confi
 }
 ```
 
+Restart the PiJuice service `sudo service pijuice start`
+
 ## Install .NET Core 3.0 runtime
 
 ## Setup bluetooth OBD2 adapter
