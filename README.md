@@ -34,6 +34,9 @@ Open PiJuice configuration file using: `sudo nano /var/lib/pijuice/pijuice_confi
 }
 ```
 
+* enable RTC drivers
+* sync RTC
+
 Restart the PiJuice service `sudo service pijuice start`
 
 ## Install .NET Core 3.0 runtime
