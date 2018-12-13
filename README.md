@@ -34,7 +34,7 @@ Open PiJuice configuration file using: `sudo nano /var/lib/pijuice/pijuice_confi
 }
 ```
 
-* enable RTC drivers
+* [enable RTC drivers](https://github.com/PiSupply/PiJuice/blob/master/Software/README.md#pijuice-rtc)
 * sync RTC
 
 Restart the PiJuice service `sudo service pijuice start`
