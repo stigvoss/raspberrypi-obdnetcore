@@ -1,7 +1,15 @@
 # Raspberry Pi OBD logger
 Project for logging OBD data on a Raspberry Pi 3 using Raspbian, .NET Core 3.0 and a PiJuice
 
+## Raspbian
+
+* Use Raspbian Lite
+
 ## Install and configure the PiJuice
+
+```bash
+sudo apt install pijuice-base
+```
 
 * shutdown on no_power event
 * start on power connected
