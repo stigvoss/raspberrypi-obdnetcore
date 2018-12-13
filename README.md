@@ -11,8 +11,28 @@ Project for logging OBD data on a Raspberry Pi 3 using Raspbian, .NET Core 3.0 a
 sudo apt install pijuice-base
 ```
 
+Open PiJuice configuration file using: `sudo nano /var/lib/pijuice/pijuice_config.JSON`
+
 * shutdown on no_power event
 * start on power connected
+
+```json
+{
+        "system_events": {
+                "no_power": {
+                        "function": "SYS_FUNC_HALT_POW_OFF",
+                        "enabled": true
+                }
+        },
+        "system_task": {
+                "enabled": true,
+                "wakeup_on_charge": {
+                        "enabled": true,
+                        "trigger_level": "0"
+                }
+        }
+}
+```
 
 ## Install .NET Core 3.0 runtime
 
