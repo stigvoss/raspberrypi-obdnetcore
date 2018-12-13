@@ -44,6 +44,7 @@ Restart the PiJuice service `sudo service pijuice start`
 ## Setup bluetooth OBD2 adapter
 
 * using bluetoothctl
+* connect BT OBD
 
 ## Bind device and set permissions
 
@@ -54,3 +55,10 @@ sudo rfcomm bind /dev/rfcomm0 <macaddr> && sudo chmod 0777 /dev/rfcomm0
 ```
 
 Replace <macaddr> with the MAC-address for your OBD2 adapter found using `bluetoothctl`
+
+## Install application
+
+### Enable application on boot
+
+* handle time before BT connected (less than 30 seconds, more than 15 seconds in test)
+* add app to rc.local or make service
