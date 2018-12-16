@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28315.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnboardDiagnostics", "OnboardDiagnostics\OnboardDiagnostics.csproj", "{192B1BC8-33E8-4355-A8C2-9677AACCC7A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{192B1BC8-33E8-4355-A8C2-9677AACCC7A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{192B1BC8-33E8-4355-A8C2-9677AACCC7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{192B1BC8-33E8-4355-A8C2-9677AACCC7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{192B1BC8-33E8-4355-A8C2-9677AACCC7A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5176CAB9-2C6A-4098-BC3B-4706E926852C}
+	EndGlobalSection
+EndGlobal
