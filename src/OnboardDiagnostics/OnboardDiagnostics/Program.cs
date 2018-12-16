@@ -45,7 +45,11 @@ namespace OnboardDiagnostics
                     foreach (var command in commands)
                     {
                         var response = obd.ExecuteCommand(command);
-                        writer.WriteLine($"{command.CommandText} {response.Value()}");
+
+                        if(response.Type == CommandResponseType.Bytes)
+                        {
+                            writer.WriteLine($"{command.CommandText} {response.Value()}");
+                        }
                     }
                 }
 

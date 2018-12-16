@@ -30,7 +30,8 @@ namespace OnboardDiagnostics
                 {
                     return CommandResponseType.OK;
                 }
-                else if (Regex.IsMatch(_content, "^[0-9A-Z]{2}(?: [A-Z0-9]{2})+$", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+                else if (Regex.IsMatch(_content, "^[0-9A-Z]{2}(?: [A-Z0-9]{2})+$", 
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled))
                 {
                     return CommandResponseType.Bytes;
                 }

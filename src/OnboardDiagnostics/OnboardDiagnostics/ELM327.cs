@@ -11,13 +11,18 @@ namespace OnboardDiagnostics
     public class ELM327
     {
         private const int ExecutionGracePeriod = 100;
+
+        private const char ResponseTermination = '>';
+
         private readonly SerialPort _port;
 
         public ELM327(string portName)
         {
             _port = new SerialPort(portName, 38400)
             {
-                NewLine = "\r"
+                NewLine = "\r",
+                ReadTimeout = 1000,
+                WriteTimeout = 1000
             };
         }
 
@@ -52,35 +57,41 @@ namespace OnboardDiagnostics
 
             if (!_port.IsOpen)
             {
-                Debug.WriteLine($"Opening port...");
-
                 _port.Open();
-
-                Debug.WriteLine($"Port opened.");
             }
 
-            Debug.WriteLine($"Command To Execute: {command.CommandText}");
-
-            _port.WriteLine(command);
+            try
+            {
+                _port.WriteLine(command);
+            }
+            catch (TimeoutException)
+            {
+                return new CommandResponse(string.Empty, command.Evaluator);
+            }
 
             Thread.Sleep(ExecutionGracePeriod);
 
-            char readCharacter;
-            while ((readCharacter = (char)_port.ReadChar()) != default(char))
+            try
             {
-                if(readCharacter == '>')
+                int readCharacter;
+                while ((readCharacter = _port.ReadChar()) != default)
                 {
-                    break;
+                    if (readCharacter == ResponseTermination)
+                    {
+                        break;
+                    }
+
+                    builder.Append((char)readCharacter);
                 }
 
-                builder.Append(readCharacter);
+                var content = builder.ToString();
+
+                return new CommandResponse(content, command.Evaluator);
             }
-
-            var content = builder.ToString();
-
-            Debug.WriteLine($"Command Response: {content}");
-
-            return new CommandResponse(content, command.Evaluator);
+            catch (TimeoutException)
+            {
+                return new CommandResponse(string.Empty, command.Evaluator);
+            }
         }
     }
 }
