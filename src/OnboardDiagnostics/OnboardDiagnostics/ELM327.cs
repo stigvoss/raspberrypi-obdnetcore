@@ -4,6 +4,7 @@ using System.IO.Ports;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace OnboardDiagnostics
 {
@@ -47,15 +48,38 @@ namespace OnboardDiagnostics
 
         public CommandResponse ExecuteCommand(ATCommand command)
         {
+            var builder = new StringBuilder();
+
+            if (!_port.IsOpen)
+            {
+                Debug.WriteLine($"Opening port...");
+
+                _port.Open();
+
+                Debug.WriteLine($"Port opened.");
+            }
+
+            Debug.WriteLine($"Command To Execute: {command.CommandText}");
+
             _port.WriteLine(command);
 
             Thread.Sleep(ExecutionGracePeriod);
 
-            var buffer = new byte[1024];
-            var readBytes = _port.Read(buffer, 0, buffer.Length);
+            char readCharacter;
+            while ((readCharacter = (char)_port.ReadChar()) != default(char))
+            {
+                if(readCharacter == '>')
+                {
+                    break;
+                }
 
-            var content = buffer.AsSpan(0, readBytes);
-            
+                builder.Append(readCharacter);
+            }
+
+            var content = builder.ToString();
+
+            Debug.WriteLine($"Command Response: {content}");
+
             return new CommandResponse(content, command.Evaluator);
         }
     }

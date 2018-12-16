@@ -33,21 +33,21 @@ namespace OnboardDiagnostics
                 ATCommand.MassAirFlowRate
             };
 
-            var writer = File.AppendText(logFile.FullName);
 
             Console.WriteLine("Scanning...");
 
             while (true)
             {
-                writer.WriteLine($"SCAN {DateTime.Now.ToString("o")}");
-
-                foreach (var command in commands)
+                using (var writer = File.AppendText(logFile.FullName))
                 {
-                    var response = obd.ExecuteCommand(command);
-                    writer.WriteLine($"{command.CommandText} {response.Value()}");
-                }
+                    writer.WriteLine($"SCAN {DateTime.Now.ToString("o")}");
 
-                writer.Flush();
+                    foreach (var command in commands)
+                    {
+                        var response = obd.ExecuteCommand(command);
+                        writer.WriteLine($"{command.CommandText} {response.Value()}");
+                    }
+                }
 
                 Thread.Sleep(1000);
             }
