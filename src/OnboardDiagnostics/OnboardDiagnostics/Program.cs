@@ -15,45 +15,47 @@ namespace OnboardDiagnostics
 
             var logFile = new FileInfo(output);
 
-            var obd = new ELM327(portName);
-
-            Console.WriteLine("Initializing...");
-
-            obd.Initialize();
-            
-            var commands = new ATCommand[]
+            using (var obd = new ELM327(portName))
             {
-                ATCommand.Speed,
-                ATCommand.Rpm,
-                ATCommand.EngineLoad,
-                ATCommand.EngineRunTime,
-                ATCommand.IntakeManifoldPressure,
-                ATCommand.IntakeAirTemperature,
-                ATCommand.EngineCoolantTemperature,
-                ATCommand.MassAirFlowRate
-            };
 
+                Console.WriteLine("Initializing...");
 
-            Console.WriteLine("Scanning...");
+                obd.Initialize();
 
-            while (true)
-            {
-                using (var writer = File.AppendText(logFile.FullName))
+                var commands = new ATCommand[]
                 {
-                    writer.WriteLine($"SCAN {DateTime.Now.ToString("o")}");
+                    ATCommand.Speed,
+                    ATCommand.Rpm,
+                    ATCommand.EngineLoad,
+                    ATCommand.EngineRunTime,
+                    ATCommand.IntakeManifoldPressure,
+                    ATCommand.IntakeAirTemperature,
+                    ATCommand.EngineCoolantTemperature,
+                    ATCommand.MassAirFlowRate
+                };
 
-                    foreach (var command in commands)
+
+                Console.WriteLine("Scanning...");
+
+                while (true)
+                {
+                    using (var writer = File.AppendText(logFile.FullName))
                     {
-                        var response = obd.ExecuteCommand(command);
+                        writer.WriteLine($"SCAN {DateTime.Now.ToString("o")}");
 
-                        if(response.Type == CommandResponseType.Bytes)
+                        foreach (var command in commands)
                         {
-                            writer.WriteLine($"{command.CommandText} {response.Value()}");
+                            var response = obd.ExecuteCommand(command);
+
+                            if (response.Type == CommandResponseType.Bytes)
+                            {
+                                writer.WriteLine($"{command.CommandText} {response.Value()}");
+                            }
                         }
                     }
-                }
 
-                Thread.Sleep(1000);
+                    Thread.Sleep(1000);
+                }
             }
         }
     }

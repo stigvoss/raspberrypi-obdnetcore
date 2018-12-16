@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace OnboardDiagnostics
 {
-    public class ELM327
+    public class ELM327 : IDisposable
     {
         private const int ExecutionGracePeriod = 100;
 
@@ -21,8 +21,8 @@ namespace OnboardDiagnostics
             _port = new SerialPort(portName, 38400)
             {
                 NewLine = "\r",
-                ReadTimeout = 1000,
-                WriteTimeout = 1000
+                ReadTimeout = 10000,
+                WriteTimeout = 10000
             };
         }
 
@@ -92,6 +92,11 @@ namespace OnboardDiagnostics
             {
                 return new CommandResponse(string.Empty, command.Evaluator);
             }
+        }
+
+        public void Dispose()
+        {
+            _port.Dispose();
         }
     }
 }
