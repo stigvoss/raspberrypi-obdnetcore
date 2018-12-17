@@ -17,7 +17,6 @@ namespace OnboardDiagnostics
 
             using (var obd = new ELM327(portName))
             {
-
                 Console.WriteLine("Initializing...");
 
                 obd.Initialize();
