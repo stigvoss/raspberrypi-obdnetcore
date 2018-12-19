@@ -11,7 +11,7 @@ namespace OnboardDiagnostics
 {
     public class ELM327 : IDisposable
     {
-        private const int ExecutionGracePeriod = 250;
+        private const int ExecutionGracePeriod = 100;
 
         private const char ResponseTermination = '>';
 
@@ -29,10 +29,7 @@ namespace OnboardDiagnostics
 
         public void Initialize()
         {
-            if (!_port.IsOpen)
-            {
-                _port.Open();
-            }
+            EnsureOpenConection();
 
             ClearPreviousResponses();
 
@@ -52,20 +49,19 @@ namespace OnboardDiagnostics
             {
                 throw new Exception("Failed to set auto mode.");
             }
+        }
 
-            Task.Factory.StartNew(() =>
+        private void EnsureOpenConection()
+        {
+            if (!_port.IsOpen)
             {
-                while(_port.IsOpen)
-                {
-                    var buffer = new byte[1024];
-                    var bytesRead = default(int);
+                _port.Open();
 
-                    while ((bytesRead = _port.Read(buffer, 0, buffer.Length)) != default)
-                    {
-                        _serialStream.Write(buffer, 0, bytesRead);
-                    }
+                if (!_port.IsOpen)
+                {
+                    throw new Exception();
                 }
-            }, TaskCreationOptions.LongRunning);
+            }
         }
 
         private void ClearPreviousResponses()
@@ -81,16 +77,10 @@ namespace OnboardDiagnostics
 
             Thread.Sleep(ExecutionGracePeriod);
 
-            var readCharacter = default(int);
-
-            while ((readCharacter = _port.ReadChar()) != default)
+            var character = default(int);
+            while ((character = _port.ReadChar()) != ResponseTermination)
             {
-                if (readCharacter == ResponseTermination)
-                {
-                    break;
-                }
-
-                builder.Append((char)readCharacter);
+                builder.Append((char)character);
             }
 
             var content = builder.ToString();
@@ -100,6 +90,7 @@ namespace OnboardDiagnostics
 
         public void Dispose()
         {
+            ExecuteCommand(ATCommand.CloseProtocol);
             _port.Dispose();
         }
     }

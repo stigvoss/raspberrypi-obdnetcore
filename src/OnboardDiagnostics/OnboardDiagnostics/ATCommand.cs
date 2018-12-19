@@ -23,6 +23,8 @@ namespace OnboardDiagnostics
         public static readonly ATCommand FuelTankLevel = new ATCommand(Mode.Current, PID.FuelTankLevel, "100 / 255 * a");
         public static readonly ATCommand EngineOilTemperature = new ATCommand(Mode.Current, PID.EngineOilTemperature, "a - 40");
         public static readonly ATCommand MassAirFlowRate = new ATCommand(Mode.Current, PID.MassAirFlowRate, "(256 * a + b) / 100");
+        public static readonly ATCommand CloseProtocol = new ATCommand("ATPC");
+
         public string CommandText { get; }
 
         public  ResponseEvaluator Evaluator { get; }
