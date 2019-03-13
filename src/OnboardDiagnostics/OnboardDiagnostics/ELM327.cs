@@ -29,10 +29,7 @@ namespace OnboardDiagnostics
 
         public void Initialize()
         {
-            if (!_port.IsOpen)
-            {
-                _port.Open();
-            }
+            EnsureOpenPort();
 
             ClearPreviousResponses();
 
@@ -55,7 +52,7 @@ namespace OnboardDiagnostics
 
             Task.Factory.StartNew(() =>
             {
-                while(_port.IsOpen)
+                while (_port.IsOpen)
                 {
                     var buffer = new byte[1024];
                     var bytesRead = default(int);
@@ -66,6 +63,19 @@ namespace OnboardDiagnostics
                     }
                 }
             }, TaskCreationOptions.LongRunning);
+        }
+
+        private void EnsureOpenPort()
+        {
+            if (!_port.IsOpen)
+            {
+                _port.Open();
+            }
+
+            if (!_port.IsOpen)
+            {
+                throw new Exception();
+            }
         }
 
         private void ClearPreviousResponses()
