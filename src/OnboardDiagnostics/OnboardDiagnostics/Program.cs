@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -45,6 +46,8 @@ namespace OnboardDiagnostics
                         foreach (var command in commands)
                         {
                             var response = obd.ExecuteCommand(command);
+
+                            Debug.WriteLineIf(response.Type == CommandResponseType.Bytes, $"{command.CommandText} {response.Value()}");
 
                             if (response.Type == CommandResponseType.Bytes)
                             {
